@@ -5,6 +5,10 @@ FROM rust:1.69 as builder
 RUN USER=root cargo new --bin tidder
 WORKDIR /tidder
 
+# Create mount points for /database and /public
+RUN mkdir /database
+RUN mkdir /public
+
 # Copy our manifests into the project directory
 COPY ./Cargo.lock ./Cargo.lock
 COPY ./Cargo.toml ./Cargo.toml
@@ -32,7 +36,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /tidder/target/release/tidder /usr/local/bin/tidder
+COPY ./.env /.env
 
+VOLUME ["/database", "/public"]
 EXPOSE 3000
 
 # Set the startup command to run our binary
