@@ -208,7 +208,7 @@
     {/if}
 
     {#each comments as comment (comment.id)}
-        <Comment data={comment} avatar_url={avatar_urls[comment.author_id].avatar_url} />
+        <Comment data={comment} avatar_url={avatar_urls[comment.author_id]?.avatar_url} />
     {/each}
 </section>
 

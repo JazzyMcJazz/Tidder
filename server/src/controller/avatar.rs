@@ -76,6 +76,7 @@ async fn get_avatar_urls(pool: DbPool, query: Query<AvatarQuery>) -> HttpRespons
     
     let user_ids = query.user_ids.split(",");
     let user_ids = user_ids.map(|id| id.parse::<String>().unwrap()).collect::<Vec<_>>();
+    println!("{:?}", user_ids);
     let urls = database::find_avatars_by_user_ids(pool, user_ids).await.expect("Failed to fetch avatar urls");
     let urls = urls.into_iter().map(|(user_id, avatar_url)| {
         json!({

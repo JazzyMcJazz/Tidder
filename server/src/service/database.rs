@@ -2,6 +2,7 @@ use std::env;
 
 use actix_web::web::block;
 use r2d2::Pool;
+use r2d2_sqlite::rusqlite::ToSql;
 use r2d2_sqlite::{rusqlite::params, SqliteConnectionManager};
 use uuid;
 
@@ -192,8 +193,15 @@ pub async fn find_avatars_by_user_ids(pool: DbPool, ids: Vec<String>) -> Result<
             let conn = pool.get()
                 .expect("couldn't get db connection from pool");
     
-            let mut stmt = conn.prepare("SELECT * FROM users WHERE id IN (?)").unwrap();
-            let url_iter = stmt.query_map(params![ids.join(",")], |row| {
+            let params: Vec<&dyn ToSql> = ids.iter().map(|x| x as &dyn ToSql).collect();
+            let query = format!(
+                "SELECT * FROM users WHERE id IN ({})",
+                ids.iter().map(|_| "?").collect::<Vec<_>>().join(",")
+            );
+
+            let mut stmt = conn.prepare(&query).unwrap();
+            
+            let url_iter = stmt.query_map(params.as_slice(), |row| {
                 let user = User::from_db(row);
                 Ok((user.id, user.avatar_url))
             }).unwrap();
