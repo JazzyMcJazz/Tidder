@@ -1,3 +1,5 @@
+use std::env;
+
 use actix_web::{ HttpResponse, get, post, cookie, web};
 use regex::{Regex, RegexSet};
 use serde_json::json;
@@ -98,7 +100,7 @@ pub async fn login(pool: DbPool, form: web::Form<UserRequest>) -> HttpResponse {
 
     // Create a secure cookie with the JWT token
     let cookie = cookie::Cookie::build("identity", token)
-        .domain(".jazzymcjazz.dk")
+        .domain(env::var("COOKIE_DOMAIN").expect("COOKIE_DOMAIN not set"))
         .path("/")
         .secure(true)
         .http_only(true)
@@ -115,6 +117,7 @@ pub async fn login(pool: DbPool, form: web::Form<UserRequest>) -> HttpResponse {
 pub async fn logout() -> HttpResponse {
     // Clear the cookie
     let cookie = cookie::Cookie::build("identity", "")
+        .domain(env::var("COOKIE_DOMAIN").expect("COOKIE_DOMAIN not set"))
         .path("/")
         .secure(true)
         .http_only(true)
