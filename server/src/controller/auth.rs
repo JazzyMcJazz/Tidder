@@ -98,6 +98,7 @@ pub async fn login(pool: DbPool, form: web::Form<UserRequest>) -> HttpResponse {
 
     // Create a secure cookie with the JWT token
     let cookie = cookie::Cookie::build("identity", token)
+        .domain(".jazzymcjazz.dk")
         .path("/")
         .secure(true)
         .http_only(true)
