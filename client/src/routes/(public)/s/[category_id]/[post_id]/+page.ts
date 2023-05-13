@@ -45,7 +45,7 @@ export const load = (async ({fetch, params, url}) => {
             const data = await response.json();
             let avatars: { [key:string]: { avatar_url?: string } } = {}
             for (const avatar of data.urls) {
-                avatars[avatar.user_id] = { avatar_url: avatar.avatar_url };
+                avatars[avatar.user_id] = { avatar_url: avatar?.avatar_url || null };
             }
             return avatars;
         } catch (_) {
