@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    @apply text-light bg-slate-950;
+  }
+  
+  body {
+    @apply min-h-screen font-sans;
+  }
+
+  section {
+    @apply bg-primary p-4 mx-6 my-4 rounded-lg;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+  
+  .container {
+    @apply mx-auto max-w-7xl;
+  }
+  
+  /* Message board specific styles */
+  .post {
+    @apply p-4 border-b border-light;
+  }
+  
+  .post-title {
+    @apply text-xl font-semibold mb-2;
+  }
+  
+  .post-body {
+    @apply text-base w-fit;
+  }
+
+  .post-body pre {
+    @apply p-2 rounded-lg border border-slate-950;
+    white-space: pre-wrap;
+  }
+  
+  .post-date {
+    @apply text-sm text-tertiary;
+  }
+  
+  .post-author {
+    @apply text-sm font-medium text-accent;
+  }
+  
+  .comment {
+    @apply mt-2 p-2 border border-light rounded text-ellipsis;
+  }
+  
+  .comment-author {
+    @apply font-medium text-accent;
+  }
+  
+  .comment-body {
+    @apply text-base;
+  }
+
+  .comment-body pre {
+    @apply p-2 rounded-lg border border-slate-950;
+    white-space: pre-wrap; 
+  }
+  
+  .comment-date {
+    @apply text-xs text-tertiary;
+  }

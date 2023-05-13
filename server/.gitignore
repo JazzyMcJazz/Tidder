@@ -1,0 +1,7 @@
+/target
+privkey.pem
+pubkey.pem
+db.db
+/public/avatar
+/tmp
+.env
