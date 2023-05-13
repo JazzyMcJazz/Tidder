@@ -39,7 +39,6 @@ export const load = (async ({fetch, params, url}) => {
     const fetchAvatarUrls = async () => {
         const user_ids_set = new Set(comments.map(comment => comment.author_id));
         const user_ids = Array.from(user_ids_set).join(",");
-        console.log(user_ids);
         
         try {
             const response = await fetch(PUBLIC_API_URL + "/api/avatar?user_ids=" + user_ids);
