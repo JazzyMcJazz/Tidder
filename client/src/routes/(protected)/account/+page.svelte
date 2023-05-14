@@ -1,8 +1,6 @@
 <script lang="ts">
     import type { Post } from '$lib/util/types';
-    import avatar_fallback from '$lib/assets/img/fallback.png'
     import { page } from '$app/stores';
-    import { slide } from 'svelte/transition';
 	import KebabMenu from '$lib/components/KebabMenu.svelte';
     import ChevronDown from 'svelte-icons/fa/FaChevronDown.svelte'
     import REST from '$lib/util/rest';
@@ -75,7 +73,7 @@
                 on:change={handleUploadAvatar}
             />
             <img 
-                src={avatar_url || avatar_fallback} 
+                src={avatar_url || '/fallback.png'} 
                 alt="avatar" 
                 class="w-24 h-24 object-cover rounded-full group-hover:brightness-50 {loadAvatar ? 'brightness-50' : ''}"
             />
@@ -110,7 +108,7 @@
     
 
     {#if showPosts}
-        <div transition:slide|local>
+        <div>
 
             {#if !posts.length}
                 <p class="text-light">You haven't posted anything yet.</p>

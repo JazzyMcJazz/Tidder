@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { PageData } from './$types';
-    import { slide } from 'svelte/transition';
 	import { goto } from '$app/navigation';
     import { page } from '$app/stores';
 	import PostPreview from '$lib/components/PostPreview.svelte';
@@ -25,7 +24,7 @@
 
 <!-- Create Post -->
 {#if showSubmit}
-    <section transition:slide|local>
+    <section>
         <input 
             type="text" 
             placeholder="Create a new post in {category.name}" 

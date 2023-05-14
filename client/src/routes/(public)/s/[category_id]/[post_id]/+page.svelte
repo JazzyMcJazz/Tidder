@@ -2,7 +2,6 @@
     import { page } from '$app/stores';
     import ArrowUp from 'svelte-icons/fa/FaArrowUp.svelte';
     import ArrowDown from 'svelte-icons/fa/FaArrowDown.svelte';
-    import { slide, fade } from 'svelte/transition';
     import REST from '$lib/util/rest';
 	import { invalidateAll } from '$app/navigation';
 	import { PUBLIC_API_URL } from '$env/static/public';
@@ -91,11 +90,7 @@
 </script>
 
 {#if error}
-    <div 
-        class="error absolute top-32 right-20 p-2 w-fit font-semibold text-center rounded-lg opacity-90 bg-red-500 z-50" 
-        in:fade={{duration: 100}}
-        out:fade={{duration: 500}}
-    >
+    <div class="error absolute top-32 right-20 p-2 w-fit font-semibold text-center rounded-lg opacity-90 bg-red-500 z-50" >
         {error}
     </div>
 {/if}
@@ -182,7 +177,6 @@
         <form 
             method="post" 
             action="/api/comments" 
-            in:slide|local 
             bind:this={form}
             on:submit|preventDefault={handleSubmitComment}
         >

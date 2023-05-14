@@ -1,6 +1,5 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
     import type { PageData } from './$types';
     import REST from '$lib/util/rest';
@@ -54,11 +53,7 @@
 </script>
 
 {#if error}
-    <div 
-        class="error absolute top-32 right-20 p-2 w-fit font-semibold text-center rounded-lg opacity-90 bg-red-500 z-50" 
-        in:fade={{duration: 100}}
-        out:fade={{duration: 500}}
-    >
+    <div class="error absolute top-32 right-20 p-2 w-fit font-semibold text-center rounded-lg opacity-90 bg-red-500 z-50">
         {error}
     </div>
 {/if}

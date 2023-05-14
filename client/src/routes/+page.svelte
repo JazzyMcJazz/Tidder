@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { slide } from 'svelte/transition';
 	import { goto } from '$app/navigation';
     import { page } from '$app/stores';
 	import PostPreview from '$lib/components/PostPreview.svelte';
@@ -22,7 +21,7 @@
   
 <!-- Create Post -->
 {#if showSubmit}
-    <section transition:slide|local>
+    <section>
         <h2 class="text-2xl font-semibold mb-4">Welcome {$page.data.user.username}</h2>
         <input 
             type="text" 

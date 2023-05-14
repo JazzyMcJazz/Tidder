@@ -1,6 +1,8 @@
 import adapter from '@sveltejs/adapter-vercel';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
+const PUBLIC_API_URL = 'https://jazzymcjazz.dk';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	preprocess: vitePreprocess(),
@@ -11,13 +13,16 @@ const config = {
 			checkOrigin: true,
 		},
 		csp: {
-			mode: 'hash',
+			mode: 'auto',
 			directives: {
 				'default-src': ['none'],
 				'script-src': ['self'],
 				'style-src': ['self'],
-				'connect-src': ['self', 'https://jazzymcjazz.dk'],
-				'img-src': ['self', 'https://jazzymcjazz.dk'],
+				'connect-src': ['self', PUBLIC_API_URL],
+				'img-src': ['self', 'data:', PUBLIC_API_URL],
+				'frame-ancestors': ['none'],
+				'base-uri': ['none'],
+				'form-action': ['self', PUBLIC_API_URL],
 			},
 			//frame-src 'none'; form-action 'self' ${PUBLIC_API_URL}; base-uri 'none';`,
 		}

@@ -1,8 +1,6 @@
 <script lang="ts">
     import type { Comment } from '$lib/util/types';
 	import { PUBLIC_API_URL } from '$env/static/public';
-    import avatar_fallback from '$lib/assets/img/fallback.png';
-    import { slide } from 'svelte/transition';
     import { page } from '$app/stores';
     import ArrowDown from 'svelte-icons/fa/FaArrowDown.svelte';
     import ArrowUp from 'svelte-icons/fa/FaArrowUp.svelte';
@@ -32,7 +30,7 @@
     }
 </script>
 
-<div class="comment flex mb-4" transition:slide|local>
+<div class="comment flex mb-4">
     <div class="mr-4 mt-1 flex flex-col items-center">
         <button type="button" class="w-5 px-1 mb-1 text-tertiary hover:text-accent">
             <ArrowUp/>
@@ -46,7 +44,7 @@
         <div class="flex justify-between items-center">
             <div class="flex items-center">
                 <img
-                    src="{avatar_url || avatar_fallback}"
+                    src="{avatar_url || '/fallback.png'}"
                     alt="avatar"
                     class="w-10 h-10 rounded-full mr-2 object-cover border-2 border-accent"
                 />

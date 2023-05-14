@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { PUBLIC_API_URL } from "$env/static/public";
-    import { fade, slide } from "svelte/transition";
 	import { invalidateAll } from "$app/navigation";
     import REST from '$lib/util/rest';
     
@@ -47,16 +46,15 @@
     type="button" 
     class="absolute top-0 left-0 w-full h-full bg-primary bg-opacity-50 backdrop-blur-sm cursor-default z-40" 
     on:click={onRequestClose}
-    transition:fade={{duration: 100}}
 ></button>
 
 {#if error}
-    <div class="error p-2 w-fit font-semibold text-center rounded-lg bg-red-500 z-50" transition:slide>
+    <div class="error p-2 w-fit font-semibold text-center rounded-lg bg-red-500 z-50">
         {error}
     </div>
 {/if}
 
-<div class="modal flex flex-col justify-center items-center z-50" transition:fade={{duration: 100}}>
+<div class="modal flex flex-col justify-center items-center z-50">
 
     <div class="bg-secondary rounded-lg p-4">
         <h2 class="text-2xl font-semibold mb-4">Sign Up</h2>
