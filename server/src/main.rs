@@ -1,4 +1,4 @@
-use actix_web::{App, HttpServer, http, web, delete, HttpResponse};
+use actix_web::{App, HttpServer, http, web, delete, HttpResponse, middleware};
 use actix_cors::Cors;
 use actix_files as a_fs;
 use controller::post::{get_own_posts, publish_post};
@@ -93,6 +93,8 @@ async fn main() -> std::io::Result<()> {
 
     // Start the HTTP server
     HttpServer::new(move || {
+
+        // CORS
         let cors = Cors::default()
             .allowed_origin(env::var("CLIENT_URL").expect("CLIENT_URL must be set").as_str())
             .allowed_methods(vec!["GET", "POST", "DELETE"])
@@ -105,17 +107,28 @@ async fn main() -> std::io::Result<()> {
             .supports_credentials()
             .max_age(3600);
 
+        // Security headers
+        let security_headers = middleware::DefaultHeaders::new()
+            .add((header::CACHE_CONTROL, "no-cache"))
+            .add((header::CONTENT_SECURITY_POLICY, "frame-ancestors 'none'"))
+            .add((header::CONTENT_TYPE, "application/json"))
+            .add((header::STRICT_TRANSPORT_SECURITY, "max-age=31536000"))
+            .add((header::X_CONTENT_TYPE_OPTIONS, "nosniff"))
+            .add((header::X_FRAME_OPTIONS, "DENY"));
+
+        // Routes
         App::new()
             .wrap(cors)
+            .wrap(security_headers)
             .app_data(web::Data::new(pool.clone()))
             .service(a_fs::Files::new("/public", "./public").show_files_listing())
             .service(web::resource("/public/avatar/{filename}").name("avatars").route(web::get().to(|| HttpResponse::Ok())))
             .service(login)
             .service(register)
-            .service(logout)
-            .service(pubkey)
+            .service(logout) 
+            .service(pubkey) 
             .service(get_popular_posts)
-            .service(get_own_posts) // NOTE: Should be below the hypothetical auth middleware, but it conflicts with the get_post_by_id endpoint slug
+            .service(get_own_posts)
             .service(get_post_by_id)
             .service(get_posts_by_category_id)
             .service(get_categories)
@@ -123,7 +136,6 @@ async fn main() -> std::io::Result<()> {
             .service(get_comments_by_post_id)
             .service(get_avatar_urls)
             .service(search)
-            // TODO: Insert authorization middleware here
             .service(get_self)
             .service(create_post)
             .service(create_comment)

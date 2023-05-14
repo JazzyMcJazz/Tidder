@@ -33,7 +33,7 @@ async fn upload_avatar(pool: DbPool, MultipartForm(form): MultipartForm<UploadFo
     
     let (filename, file) = match security::validate_image(file, filename) {
         Ok(data) => data,
-        Err(msg) => return HttpResponse::BadRequest().json(json!({ "status": "error", "message": msg })),
+        Err(msg) => return HttpResponse::UnsupportedMediaType().json(json!({ "status": "error", "message": msg })),
     };
     
     
@@ -43,20 +43,20 @@ async fn upload_avatar(pool: DbPool, MultipartForm(form): MultipartForm<UploadFo
     fs::write(&avatar_path, file).unwrap();
 
     // delete the old avatar if it wasn't overwritten
-    // let old_avatar = database::find_user_by_id(pool.clone(), user_id.clone()).await.expect("Failed to fetch user").avatar_url;
-    // match old_avatar {
-    //     Some(old_avatar) => {
-    //         let old_avatar = old_avatar.split("/").last().unwrap();
-    //         let old_avatar_path = format!("{}/{}", avatar_dir, old_avatar);
-    //         if old_avatar_path != avatar_path {
-    //             match fs::remove_file(old_avatar_path) {
-    //                 Ok(_) => (),
-    //                 Err(_) => (),
-    //             }
-    //         }
-    //     },
-    //     None => (),
-    // }
+    let old_avatar = database::find_user_by_id(pool.clone(), user_id.clone()).await.expect("Failed to fetch user").avatar_url;
+    match old_avatar {
+        Some(old_avatar) => {
+            let old_avatar = old_avatar.split("/").last().unwrap();
+            let old_avatar_path = format!("{}/{}", avatar_dir, old_avatar);
+            if old_avatar_path != avatar_path {
+                match fs::remove_file(old_avatar_path) {
+                    Ok(_) => (),
+                    Err(_) => (),
+                }
+            }
+        },
+        None => (),
+    }
 
     // generate the url for the avatar   
     let avatar_url = req.url_for("avatars", [format!("{}", filename)]).unwrap();
@@ -76,7 +76,7 @@ async fn get_avatar_urls(pool: DbPool, query: Query<AvatarQuery>) -> HttpRespons
     
     let user_ids = query.user_ids.split(",");
     let user_ids = user_ids.map(|id| id.parse::<String>().unwrap()).collect::<Vec<_>>();
-    println!("{:?}", user_ids);
+    
     let urls = database::find_avatars_by_user_ids(pool, user_ids).await.expect("Failed to fetch avatar urls");
     let urls = urls.into_iter().map(|(user_id, avatar_url)| {
         json!({
