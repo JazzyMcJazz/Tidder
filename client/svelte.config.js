@@ -16,8 +16,8 @@ const config = {
 				'default-src': ['none'],
 				'script-src': ['self'],
 				'style-src': ['self'],
-				'connect-src': ['self', 'http://localhost:3000'],
-				'img-src': ['self', 'http://localhost:3000'],
+				'connect-src': ['self', 'https://jazzymcjazz.dk'],
+				'img-src': ['self', 'https://jazzymcjazz.dk'],
 			},
 			//frame-src 'none'; form-action 'self' ${PUBLIC_API_URL}; base-uri 'none';`,
 		}
