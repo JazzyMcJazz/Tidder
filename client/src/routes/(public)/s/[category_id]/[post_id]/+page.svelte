@@ -202,7 +202,13 @@
     {/if}
 
     {#each comments as comment (comment.id)}
-        <Comment data={comment} avatar_url={avatar_urls[comment.author_id]?.avatar_url} />
+        <Comment 
+            data={comment} 
+            avatar_url={
+                avatar_urls[comment.author_id]?.avatar_url?.startsWith(PUBLIC_API_URL) 
+                    ? avatar_urls[comment.author_id]?.avatar_url 
+                    : undefined
+            } />
     {/each}
 </section>
 

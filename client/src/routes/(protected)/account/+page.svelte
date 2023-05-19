@@ -9,7 +9,9 @@
 
     $: posts = $page.data.posts as Post[];
     $: user = $page.data.user;
-    $: avatar_url = $page.data.avatar_url;
+    $: avatar_url = $page.data.avatar_url?.startsWith(PUBLIC_API_URL) 
+                    ? $page.data.avatar_url 
+                    : undefined
 
     let avatarInput: HTMLInputElement;
 
