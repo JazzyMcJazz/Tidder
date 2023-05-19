@@ -23,7 +23,6 @@ export const handle = (async ({event, resolve}) => {
 
     // Set security headers
     event.setHeaders({
-        // "Content-Security-Policy": `default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' ${PUBLIC_API_URL} data:; script-src 'self' 'unsafe-inline'; connect-src 'self' ${PUBLIC_API_URL}; frame-src 'none'; form-action 'self' ${PUBLIC_API_URL}; base-uri 'none';`,
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
     });
