@@ -24,9 +24,6 @@ pub async fn get_popular_posts(query: web::Query<QueryParams>, req: HttpRequest)
 #[get("/api/post/me")]
 pub async fn get_own_posts(req: HttpRequest) -> impl Responder {
 
-    let cookie = req.cookie("csrf").unwrap();
-    println!("Cookie: {:?}", cookie);
-
     // XXX: Bad Practice! Should be moved to a middleware
     let (user_id, _) = match security::verify_user(&req) {
         Ok(claims) => claims,
