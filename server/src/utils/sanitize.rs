@@ -8,12 +8,13 @@ const DELETED_TEXT: &str = "<p class=\"text-red-500\">deleted</p>";
 
 pub fn sanitize_post(post: &mut Post, show_all: &bool) -> Post {
     
-    // convert markdown to html and sanitize
+    // sanitize and convert markdown to html
     let adapter = SyntectAdapter::new(CODE_BLOCK_THEME);
     let options = ComrakOptions::default();
     let mut plugins = ComrakPlugins::default();
     plugins.render.codefence_syntax_highlighter = Some(&adapter);
     
+    // If the post is deleted, replace the title and body with "deleted"
     if !show_all && post.deleted {
         post.title = DELETED_TEXT.to_string();
         post.body = DELETED_TEXT.to_string();

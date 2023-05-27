@@ -11,7 +11,7 @@ pub fn validate_new_post(form: &web::Form<CreatePostRequest>) -> Result<(), &'st
     if form.body.len() < 10 {
         return Err("Post body must be at least 10 characters long");
 
-    // form length too long
+    // post length too long
     } else if form.body.len() > 10000 {
         return Err("Post body can be at most 10000 characters long");
     

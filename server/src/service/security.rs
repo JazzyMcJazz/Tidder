@@ -67,19 +67,7 @@ pub fn verify_user(req: &HttpRequest) -> Result<(String, String), &'static str> 
     );
 
     match token_data {
-        Ok(token_data) => {
-            // Verify the CSRF token
-            let csrf = match req.cookie("csrf") {
-                Some(csrf) => csrf,
-                None => return Err("Unauthorized"),
-            };
-
-            if csrf.value() != token {
-                return Err("Unauthorized");
-            }
-
-            Ok((token_data.claims.sub, token_data.claims.role))
-        },
+        Ok(token_data) => Ok((token_data.claims.sub, token_data.claims.role)),
         Err(_) => Err("Unauthorized"),
     }
 }

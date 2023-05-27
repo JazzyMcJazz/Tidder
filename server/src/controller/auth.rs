@@ -74,16 +74,7 @@ pub async fn register(pool: DbPool, form: web::Form<UserRequest>) -> HttpRespons
     };
 
     // Create a secure cookie with the JWT token
-    let identity_cookie = cookie::Cookie::build("identity", &token)
-        .path("/")
-        .secure(true)
-        .http_only(true)
-        .same_site(cookie::SameSite::None)
-        .max_age(cookie::time::Duration::days(365))
-        .finish();
-
-    // Create a secure cookie with the JWT token
-    let csrf_cookie = cookie::Cookie::build("csrf", &token)
+    let cookie = cookie::Cookie::build("identity", &token)
         .path("/")
         .secure(true)
         .http_only(true)
@@ -92,8 +83,7 @@ pub async fn register(pool: DbPool, form: web::Form<UserRequest>) -> HttpRespons
         .finish();
 
     HttpResponse::Created()
-        .cookie(identity_cookie)
-        .cookie(csrf_cookie)
+        .cookie(cookie)
         .json(json!({ "status": "ok", "user_id": user_id }))
     
 }
@@ -109,19 +99,8 @@ pub async fn login(pool: DbPool, form: web::Form<UserRequest>) -> HttpResponse {
     };
 
     // Create a secure cookie with the JWT token
-    let identity_cookie = cookie::Cookie::build("identity", &token)
+    let cookie = cookie::Cookie::build("identity", &token)
         .domain(env::var("COOKIE_DOMAIN").expect("COOKIE_DOMAIN not set"))
-        .path("/")
-        .secure(true)
-        .http_only(true)
-        .same_site(cookie::SameSite::None)
-        .max_age(cookie::time::Duration::days(365))
-        .finish();
-
-    
-
-    // Create a secure cookie with the JWT token
-    let csrf_cookie = cookie::Cookie::build("csrf", &token)
         .path("/")
         .secure(true)
         .http_only(true)
@@ -130,8 +109,7 @@ pub async fn login(pool: DbPool, form: web::Form<UserRequest>) -> HttpResponse {
         .finish();
 
     HttpResponse::Ok()
-        .cookie(identity_cookie)
-        .cookie(csrf_cookie)
+        .cookie(cookie)
         .json(json!({ "status": "ok", "username": form.username }))
 }
 
@@ -143,21 +121,11 @@ pub async fn logout() -> HttpResponse {
         .path("/")
         .secure(true)
         .http_only(true)
-        .same_site(cookie::SameSite::None)
-        .max_age(cookie::time::Duration::MIN)
-        .finish();
-
-    // Create a secure cookie with the JWT token
-    let csrf_cookie = cookie::Cookie::build("csrf", "")
-        .path("/")
-        .secure(true)
-        .http_only(true)
         .same_site(cookie::SameSite::Strict)
         .max_age(cookie::time::Duration::MIN)
         .finish();
 
     HttpResponse::Ok()
         .cookie(identity_cookie)
-        .cookie(csrf_cookie)
         .json(json!({ "status": "ok" }))
 }
