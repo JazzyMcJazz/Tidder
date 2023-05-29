@@ -20,7 +20,7 @@ const config = {
 			directives: {
 				'default-src': ['none'],
 				'script-src': ['self'],
-				'style-src': ['self'],
+				'style-src': ['self', 'sha256-xyz4zkCjuC3lZcD2UmnqDG0vurmq12W/XKM5Vd0+MlQ='],
 				'connect-src': ['self', PUBLIC_API_URL],
 				'img-src': ['self', PUBLIC_API_URL],
 				'frame-ancestors': ['none'],

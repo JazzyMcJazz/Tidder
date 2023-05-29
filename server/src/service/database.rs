@@ -132,10 +132,12 @@ pub async fn find_users(pool: DbPool) -> Result<Vec<User>, String> {
 
 pub async fn find_user_by_id(pool: DbPool, id: String) -> Result<User, String> {
     
+        // Open a connection on a separate thread and return the result to the main thread
         let result = block(move || {
             let conn = pool.get()
                 .expect("couldn't get db connection from pool");
     
+            // Query for the user
             conn.query_row(
                 "SELECT * FROM users WHERE id = ?", 
                 params![id],
@@ -143,7 +145,7 @@ pub async fn find_user_by_id(pool: DbPool, id: String) -> Result<User, String> {
                     Ok(User::from_db(row))
                 }
             )
-    
+        // Handle any errors that may occur
         }).await.map_err(|e| {
             eprintln!("{}", e);
             "Error finding user".to_string()
